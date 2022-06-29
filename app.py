@@ -24,8 +24,7 @@ def show():
     data = []
     for todo in toDoList:
         item = {
-            '_id': str(todo['_id']),
-            'id' : todo['id'],
+            'id': todo['id'],
             'todo': todo['todo'],
             'marked': todo['marked']
         }
@@ -51,15 +50,15 @@ def add():
 
     return jsonify(
         status=True,
-        message='Item ' + data + ' added successfully!'
+        message='Item added successfully!'
     ), 201
 
 @app.route('/delete', methods=['GET'])
 def delete():
-    _id = request.args.get('_id')
+    _id = request.args.get('id')
 
     toDelete = {
-        '_id': ObjectId(_id)
+        'id': _id
     }
 
     result = db.todo.delete_one(toDelete)
@@ -71,10 +70,10 @@ def delete():
 
 @app.route('/mark-complete', methods=['GET'])
 def markComplete():
-    _id = request.args.get('_id')
+    data = request.args.get('id')
 
     toMark = {
-        '_id': ObjectId(_id)
+        'id': data,
     }
 
     result = db.todo.update_one(toMark, { "$set": { "marked": True } })
