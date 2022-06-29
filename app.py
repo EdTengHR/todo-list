@@ -6,7 +6,12 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
+# If running directly through python
 app.config["MONGO_URI"] = 'mongodb://localhost:27017/flaskdb'
+
+# If running on docker
+app.config["MONGO_URI"] = 'mongodb://mongodb/flaskdb'
+
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 mongo = PyMongo(app)
@@ -73,7 +78,7 @@ def markComplete():
     data = request.args.get('id')
 
     toMark = {
-        'id': data,
+        'id': data
     }
 
     result = db.todo.update_one(toMark, { "$set": { "marked": True } })
